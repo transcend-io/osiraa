@@ -2,14 +2,13 @@
 pip install -r requirements.txt
 sudo apt update
 sudo apt install postgresql
-createdb authorizedagent -h localhost -p 5432 -U postgres
+createdb authorizedagent09 -h localhost -p 5432 -U postgres
 python manage.py migrate
 ```
 
 Create superuser named vscode with password `vscode`
 ```
 python3 manage.py createsuperuser
-python3 manage.py collectstatic
 ```
 
 Run/deploy the app:
@@ -25,11 +24,12 @@ Add a `Covered Business`:
 - Cb ID: 1234
 - Discover Endpoint: https://drp.staging.transcen.dental/.well-known/data-rights.json
 - API root Endpoint: https://drp.staging.transcen.dental
-- Supported Actions: not needed, will be populated from well known endpoint
+- Supported Actions: access
 - Auth bearer token: 1234
 
 Add a `User Identity` so we can submit privacy requests on their behalf:
 - email is verified and `dev+drp@transcend.io`
 
-You can view the keys used by the DRP to sign the requests by running `cat drp_aa_mvp/keys.json | jq` after the server starts up.
+You can view the keys used by the DRP to sign the requests by running `cat /workspaces/osiraa/drp_aa_mvp/agents.json | jq ".[].verify_key"` after the server starts up.
+
 We will want to use the `verify_key` value to verify that the signatures are valid.
